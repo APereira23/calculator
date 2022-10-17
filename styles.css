@@ -22,8 +22,11 @@ body {
 #zero {grid-area: zero}
 #decimal {grid-area: decimal}
 #equals {grid-area: equals}
+#modulus {grid-area: modulus}
+#power {grid-area: power}
+#factorial {grid-area: factorial}
 
-
+/* Grid boxes need to be same size!*/
 .grid-container {
   border: solid 2px;
   border-radius: 3%;
@@ -31,20 +34,24 @@ body {
   background-color: rgb(172, 168, 159);
   width: 400px;
   height: 400px;
+  overflow: hidden;
   display: grid;
   grid-template-areas: 
-    'display display display display'
-    'clear pos-neg percent division'
-    'seven eight nine multiplication'
-    'four five six subtraction'
-    'one two three addition'
-    'zero zero decimal equals';
+    'display display display display display'
+    'clear clear percent division power'
+    'seven eight nine multiplication factorial'
+    'four five six subtraction modulus'
+    'one two three addition equals'
+    'zero zero pos-neg decimal equals';
+  grid-template-rows: max-content;
 }
 
 .box {
   margin: 2px;
   border: 2px solid;
   border-radius: 4%;
+
+
 }
 
 button {
@@ -54,6 +61,6 @@ button {
 #display {
   background-color: rgb(193, 208, 210);
   text-align: right;
-  /*NEEDS:*/
-  /*CENTERING; PREVENT CONTAINER EXPANSION*/
+  overflow: hidden;
+  font-size: 48px;
 }
