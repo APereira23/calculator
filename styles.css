@@ -32,7 +32,14 @@ body {
   padding: 10px;
   background-color: rgb(172, 168, 159);
   width: 400px;
-  height: 500px;
+  height: 530px;
+}
+
+.calc-header {
+  border: double 6px rgb(62, 62, 62);
+  margin-bottom: 10px;
+  border-radius: 45%;
+  background-color: rgb(215, 211, 201);
 }
 
 .calc-header h3 {
@@ -44,7 +51,7 @@ body {
 }
 
 .calc-header p {
-  text-align: right;
+  text-align: center;
   font-style: italic;
   color: rgb(47, 47, 47);
   font-size: 10px;
@@ -73,11 +80,8 @@ body {
   border-radius: 4%;
 }
 
-button {
-  cursor: pointer;
-}
-
 #display {
+  height: 55px;
   background-color: rgb(193, 208, 210);
   text-align: right;
   overflow: hidden;
@@ -85,21 +89,59 @@ button {
   margin-bottom: 15px;
 }
 
-#clear {
-  background-color: rgb(204, 2, 2);
-  font-weight: bold; 
+button {
+  cursor: pointer;
 }
 
-#equals {
-  background-color: rgb(59, 180, 32);
+#clear {
+  background-color: hsl(0, 98%, 40%);
+  font-weight: bold; 
 }
+#clear:hover {
+  background-color: hsl(0, 98%, 35%);
+  transition: 100ms;
+}
+#clear:active {
+  background-color: hsl(0, 98%, 25%);
+  transition: 100ms;
+}
+
 
 .operand,
 .aux {
-  background-color: rgb(237, 236, 236);
+  background-color: hsl(0, 3%, 90%);
+}
+.operand:hover,
+.aux:hover {
+  background-color: hsl(0, 3%, 80%);
+}
+.operand:active,
+.aux:active {
+  background-color: hsl(0, 3%, 60%);
 }
 
-.operator {
-  background-color: rgb(248, 198, 112);
+
+.operator,
+#factorial {
+  background-color: hsl(38, 91%, 75%);
+}
+.operator:hover,
+#factorial:hover {
+  background-color: hsl(38, 71%, 65%);
+}
+.operator:active,
+#factorial:active {
+  background-color: hsl(38, 71%, 45%);
+}
+
+
+#equals {
+  background-color: hsl(109, 70%, 40%);
+}
+#equals:hover {
+  background-color: hsl(109, 70%, 35%);
+}
+#equals:active {
+  background-color: hsl(109, 70%, 25%);
 }
 
