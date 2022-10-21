@@ -1,6 +1,12 @@
 const display = document.querySelector('#display');
-
+const equals = document.querySelector('#equals');
+const operators = document.querySelectorAll('.operator');
+const operands = document.querySelectorAll('.operand');
 const clear = document.querySelector('#clear');
+
+
+// ----------------------- clear button --------------------------------------//
+
 clear.addEventListener('click', () => {
   display.textContent = "";
   storedValue = 0;
@@ -11,7 +17,6 @@ clear.addEventListener('click', () => {
 // ---------------------  operand wiring  ----------------------------------//
 
 
-const operands = document.querySelectorAll('.operand');
 operands.forEach(operand => operand.addEventListener('click', (e) => {
   display.textContent += `${e.target.innerHTML}`;
 }));
@@ -44,15 +49,17 @@ factorial.addEventListener('click', () => {
 });
 
 
-// -------------------------- operator wiring -------------------------------//
+// -------------------------- operation wiring -------------------------------//
 
-const equals = document.querySelector('#equals');
-const operators = document.querySelectorAll('.operator');
+
 
 let storedValue = 0;
 let operation = "";
 
 operators.forEach(operator => operator.addEventListener('click', (e) => {
+  if (operation != "") operate(storedValue, operation);
+  //^enables chain operations without pressing '='
+
   storedValue = Number(display.textContent);
   operation = e.target.id;
   display.textContent = "";
@@ -61,7 +68,11 @@ operators.forEach(operator => operator.addEventListener('click', (e) => {
 equals.addEventListener('click', () => operate(storedValue, operation));
 
 function operate() {
-  
+
+  if (operation == "") return;
+  if (display.textContent == "" || display.textContent == "error")
+    return display.textContent = "error";
+
   switch (operation) {
     case "addition":
       result = add(storedValue);
@@ -81,11 +92,25 @@ function operate() {
     case "modulus":
       result = mod(storedValue);
       break;
+    default:
+      result = display.textContent;
   };
+  
+  if (result % 1 == 0) {
+    display.textContent = result;
+    storedValue = result;
+  } else {
+    display.textContent = result.toFixed(2);
+    storedValue = result.toFixed(2);
+  }
 
-  display.textContent = result;
+  operation = "";
 };
 
+
+
+
+//-------------------------- operation functions -------------------------------//
 
 function add() {
   return storedValue + Number(display.textContent);
@@ -100,6 +125,7 @@ function mult() {
 };
 
 function divd() {
+  if (Number(display.textContent) == "0") return display.textContent = "sry no can do";
   return storedValue / Number(display.textContent);
 };
 
