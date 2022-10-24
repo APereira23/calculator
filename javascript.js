@@ -1,18 +1,13 @@
+const calculator = document.querySelector('.calculator');
 const display = document.querySelector('#display');
 const equals = document.querySelector('#equals');
 const operators = document.querySelectorAll('.operator');
 const operands = document.querySelectorAll('.operand');
-const clear = document.querySelector('#clear');
-
-
-// ----------------------- clear button --------------------------------------//
-
-clear.addEventListener('click', () => {
-  display.textContent = "";
-  storedValue = 0;
-  operation = "";
-});
-
+const clearBtn = document.querySelector('#clear');
+const decimal = document.getElementById('decimal');
+const percent = document.querySelector('#percent');
+const posNeg = document.querySelector('#pos-neg');
+const factorial = document.querySelector('#factorial');
 
 // ---------------------  operand wiring  ----------------------------------//
 
@@ -21,12 +16,10 @@ operands.forEach(operand => operand.addEventListener('click', (e) => {
   display.textContent += `${e.target.innerHTML}`;
 }));
 
-const percent = document.querySelector('#percent');
 percent.addEventListener('click', () => {
   display.textContent *= 0.01;
 });
 
-const posNeg = document.querySelector('#pos-neg');
 posNeg.addEventListener('click', () => {
   if (display.textContent.slice(0, 1) == "-") {
     display.textContent = display.textContent.slice(1, display.textContent.length);
@@ -36,7 +29,7 @@ posNeg.addEventListener('click', () => {
   }
 });
 
-const factorial = document.querySelector('#factorial');
+
 factorial.addEventListener('click', () => {
   if (display.textContent == "") return;
   if (display.textContent == "0") {
@@ -56,14 +49,19 @@ factorial.addEventListener('click', () => {
 let storedValue = 0;
 let operation = "";
 
-operators.forEach(operator => operator.addEventListener('click', (e) => {
-  if (operation != "") operate(storedValue, operation);
-  //^enables chain operations without pressing '='
 
-  storedValue = Number(display.textContent);
-  operation = e.target.id;
-  display.textContent = "";
-}));
+//Clear Button
+clearBtn.addEventListener('click', clear);
+
+
+//Disables multiple decimals per operand
+decimal.addEventListener('click', () => {
+  decimal.disabled = true;
+});
+
+
+operators.forEach(operator => operator.addEventListener('click', storeOperator));
+
 
 equals.addEventListener('click', () => operate(storedValue, operation));
 
@@ -102,7 +100,7 @@ function operate() {
   } else {
     display.textContent = result.toFixed(2);
     storedValue = result.toFixed(2);
-  }
+  };
 
   operation = "";
 };
@@ -110,7 +108,24 @@ function operate() {
 
 
 
-//-------------------------- operation functions -------------------------------//
+//-------------------------- aux functions ------------------------------------//
+
+function clear() {
+  display.textContent = "";
+  storedValue = 0;
+  operation = "";
+  decimal.disabled = false;
+};
+
+
+function storeOperator(e) {
+  if (operation != "") operate(storedValue, operation);
+  //^enables chain operations without pressing '='
+  storedValue = Number(display.textContent);
+  operation = e.target.id;
+  display.textContent = "";
+  decimal.disabled = false;
+};
 
 function add() {
   return storedValue + Number(display.textContent);
@@ -140,3 +155,33 @@ function pow() {
 function mod() {
   return storedValue % Number(display.textContent);
 }
+
+// ----------------------- Keyboard Support ---------------------------------//
+
+document.addEventListener('keydown', (e) => {
+  if (e.code.slice(0, 3) == "Dig") display.textContent += e.key;
+  if (e.key == ".") decimalKey();
+  if (e.key == "Backspace") clear();
+  if (e.key == "Enter") operate(storedValue, operation);
+  if (e.key == "+") {keyOperator(); operation = "addition"};
+  if (e.key == "-") {keyOperator(); operation = "subtraction"};
+  if (e.key == "*") {keyOperator(); operation = "multiplication"};
+  if (e.key == "/") {e.preventDefault(); keyOperator(); operation = "division"};
+
+});
+
+function keyOperator() {
+  if (operation != "") operate(storedValue, operation);
+  storedValue = Number(display.textContent);
+  display.textContent = "";
+  decimal.disabled = false;
+};
+
+function decimalKey() {
+  if (decimal.disabled == true) {
+    return;
+  } else {
+    display.textContent += ".";
+    decimal.disabled = true;
+  }
+};
